@@ -1,10 +1,19 @@
 # installing packages
 install.packages("naniar") # for missing value
+install.packages("wordcloud")
+install.packages("RColorBrewer")\
+install.packages("tm")
+install.packages("SnowballC")
 
 # loading packages
 library(naniar)
 library(caret)
 library(ggplot2)
+library(stringr)
+library(wordcloud)
+library(RColorBrewer)
+library(tm)
+library(SnowballC)
 
 # Importing data
 our.test = read.csv("test.csv")
@@ -39,3 +48,29 @@ our.train$Pclass = as.factor(our.train$Pclass)
 
 # SEX
 str(our.data$Sex)
+
+# Name
+title = getTitle(our.data$Name)
+
+# add title column to our data
+our.data$title = title
+
+# convert to factor
+our.data$title = as.factor(our.data$title)
+table(our.data$title)
+
+#AGE
+str(our.data$Age)
+summary(our.data$Age)
+
+missing_age_title.df = aggregate(Age ~ title, data = our.data, function(x){
+  sum(is.na(x))
+}, na.action = NULL)
+
+# calculate and add percentage column
+missing_age_title.df$Perc = round(missing_age_title.df$Age / sum(is.na(our.data$Age)) * 100, 
+                                  digits = 2)
+
+missing_age_title.df = missing_age_title.df[which(missing_age_title.df$Age != 0), ]
+
+
