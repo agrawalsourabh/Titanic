@@ -34,3 +34,6 @@ getTitle = function(x){
   
   return(title)
 }
+
+# Embarked - replace empty value to "S"
+
